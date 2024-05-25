@@ -11,10 +11,19 @@
 
 
 
-.principal, .principal2, .principal3 {
+.principal, .principal2 {
     background-size: cover; 
     background-position: center; 
     height: 100vh; /* Utiliza el 100% de la altura de la ventana */
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+}
+
+.principal3 {
+    background-size: cover; 
+    background-position: center; 
+    height: 850px; 
     display: flex;
     align-items: center; 
     justify-content: center; 
@@ -30,7 +39,7 @@
 }
 
 .principal3 {
-    background-image: url("https://elchapuzasinformatico.com/wp-content/uploads/2015/02/Grand-Theft-Auto-V-4K-5.jpg");
+    background: linear-gradient(45deg, #F15A22, #6ab7ff);
 }
 
 
