@@ -11,23 +11,15 @@
 
 
 
-.principal, .principal2{
+.principal, .principal2, .principal3 {
     background-size: cover; 
     background-position: center; 
-    height: 600px;
+    height: 100vh; /* Utiliza el 100% de la altura de la ventana */
     display: flex;
     align-items: center; 
     justify-content: center; 
 }
 
-.principal3 {
-    background-size: cover; 
-    background-position: center; 
-    height: 880px;
-    display: flex;
-    align-items: center; 
-    justify-content: center; 
-}
 
 .principal {
     background-image: url("https://www.xtrafondos.com/descargar.php?id=3229&resolucion=1280x720");
