@@ -1,12 +1,12 @@
 async function obtenerPacientes() {
-    const token = localStorage.getItem('jwt');
-    console.log("Token JWT obtenido:", token);
+    // const token = localStorage.getItem('jwt');
+    // console.log("Token JWT obtenido:", token);
 
-    if (!token) {
-        console.log('No se encontró el token en el localStorage');
-        mostrarToast('No se encontró el token. Por favor, inicie sesión.', '#f44336');
-        return;
-    }
+    // if (!token) {
+    //     console.log('No se encontró el token en el localStorage');
+    //     mostrarToast('No se encontró el token. Por favor, inicie sesión.', '#f44336');
+    //     return;
+    // }
 
     const url = 'http://localhost:8080/paciente/all'; // Cambiar a la URL real de tu API
 
@@ -14,7 +14,7 @@ async function obtenerPacientes() {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                // 'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
@@ -30,7 +30,7 @@ async function obtenerPacientes() {
 
         // Iterar por los datos y crear las filas
         data.result.forEach(paciente => {
-            const estadoActivo = paciente.estado === 'activo';
+            const estadoActivo = paciente.status === true;
             const estadoClase = estadoActivo ? 'btn-success' : 'btn-danger';
             const estadoTexto = estadoActivo ? 'Activo' : 'Inactivo';
 
