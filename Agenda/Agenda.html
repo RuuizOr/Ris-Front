@@ -186,31 +186,37 @@
 </div>
 
 
-<!--Modificar Estado del servicio-->
-    <div class="modal" id="modificarEstadoCita" tabindex="-1" role="dialog" aria-labelledby="customModalLabel"
-    aria-hidden="true">
-   <div class="modal-dialog custom-modal-dialog" role="document">
-       <div class="modal-content custom-modal-content">
-           <div class="modal-header custom-modal-header">
-               <h5 class="modal-title custom-modal-title">Actualizar Estado</h5>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                   <span aria-hidden="true">&times;</span>
-               </button>
-           </div>
-           <div class="modal-body custom-modal-body">
-               <form id="formModificarEstado">
-                   <input type="hidden" id="idServicio" name="idServicio">
-                   <input type="hidden" id="estadoServicio" name="estadoServicio">
-                   <h6>¿Estás seguro de actualizar el estado?</h6>
-                   <div class="modal-footer custom-modal-footer">
-                       <button type="submit" class="btn btn-primary">Actualizar</button>
-                   </div>
-               </form>
-           </div>
-       </div>
-   </div>
-</div>
-
+<!-- Modificar Estado del servicio -->
+<div class="modal" id="modificarEstadoCita" tabindex="-1" role="dialog" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog custom-modal-dialog" role="document">
+        <div class="modal-content custom-modal-content">
+            <div class="modal-header custom-modal-header">
+                <h5 class="modal-title custom-modal-title">Actualizar Estado</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body custom-modal-body">
+                <form id="formModificarEstado">
+                    <input type="hidden" id="idServicio" name="idServicio">
+                    <!-- Aquí agregamos un select para cambiar el estado -->
+                    <div class="form-group">
+                        <label for="estadoServicio">Estado</label>
+                        <select id="estadoServicio" name="estadoServicio" class="form-control">
+                            <option value="Activo">Activo</option>
+                            <option value="No Activo">No Activo</option>
+                        </select>
+                    </div>
+                    <h6>¿Estás seguro de actualizar el estado?</h6>
+                    <div class="modal-footer custom-modal-footer">
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+ </div>
+ 
 
 <!-- Scripts utilizads -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

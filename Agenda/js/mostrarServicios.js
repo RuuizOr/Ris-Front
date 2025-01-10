@@ -23,6 +23,10 @@ function cargarCitas() {
     tbody.innerHTML = ""; // Limpiar la tabla
 
     citas.forEach((cita) => {
+        const estadoActivo = cita.estado === "Activo";
+        const estadoClase = estadoActivo ? "btn-success" : "btn-danger";
+        const estadoTexto = estadoActivo ? "Activo" : "No Activo";
+
         const row = document.createElement("tr");
         row.setAttribute("data-id", cita.id);
         row.innerHTML = `
@@ -30,10 +34,25 @@ function cargarCitas() {
             <td>${cita.hora}</td>
             <td>${cita.ubicacion}</td>
             <td>${cita.motivo}</td>
-            <td>${cita.estado}</td>
             <td>
-                <button class="btn btn-warning btn-sm editarCita" data-toggle="modal" data-target="#modificarCita" data-id="${cita.id}">
-                    Editar
+                <button class="btn btn-sm ${estadoClase}" 
+                    data-id="${cita.id}" 
+                    data-estado="${cita.estado}" 
+                    data-toggle="modal" 
+                    data-target="#modificarEstadoCita">
+                    <i class="fas fa-sync-alt"></i> ${estadoTexto}
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-primary btnIcono" 
+                    data-id="${cita.id}" 
+                    data-dia="${cita.dia}" 
+                    data-hora="${cita.hora}" 
+                    data-ubicacion="${cita.ubicacion}" 
+                    data-motivo="${cita.motivo}" 
+                    data-toggle="modal" 
+                    data-target="#modificarCita">
+                    <i class="fas fa-edit"></i>
                 </button>
             </td>
         `;
@@ -62,7 +81,7 @@ document.querySelector("#formRegistrarCita").addEventListener("submit", (e) => {
     citas.push(nuevaCita);
     cargarCitas();
     $('#registrarCita').modal('hide'); // Cerrar modal
-    alert("Cita registrada exitosamente");
+    mostrarToast("Cita registrada exitosamente", "#4CAF50"); // Mostrar alerta de éxito
 });
 
 // Editar una cita existente
@@ -83,22 +102,20 @@ document.querySelector("#formModificarCita").addEventListener("submit", (e) => {
         cita.motivo = motivo;
         cargarCitas();
         $('#modificarCita').modal('hide'); // Cerrar modal
-        alert("Cita actualizada correctamente");
+        mostrarToast("Cita actualizada correctamente", "#4CAF50"); // Alerta de éxito
     }
 });
 
-// Abrir modal para editar cita
+// Abrir modal para modificar el estado de una cita
 document.querySelector("#serviciosTableBody").addEventListener("click", (e) => {
-    if (e.target.classList.contains("editarCita")) {
-        const id = parseInt(e.target.getAttribute("data-id"));
+    if (e.target.closest("button") && e.target.closest("button").classList.contains("btn")) {
+        const id = parseInt(e.target.closest("button").getAttribute("data-id"));
         const cita = citas.find((cita) => cita.id === id);
-
         if (cita) {
-            document.querySelector("#idMod").value = cita.id;
-            document.querySelector("#diaMod").value = cita.dia;
-            document.querySelector("#horaMod").value = cita.hora;
-            document.querySelector("#ubicacionMod").value = cita.ubicacion;
-            document.querySelector("#motivoMod").value = cita.motivo;
+            // Abrir el modal y cargar la información del estado
+            document.querySelector("#idServicio").value = cita.id;
+            document.querySelector("#estadoServicio").value = cita.estado; // Asignar el estado actual
+            $('#modificarEstadoCita').modal('show');
         }
     }
 });
@@ -108,16 +125,55 @@ document.querySelector("#formModificarEstado").addEventListener("submit", (e) =>
     e.preventDefault();
 
     const id = parseInt(document.querySelector("#idServicio").value);
-    const nuevoEstado = document.querySelector("#estadoServicio").value;
+    const nuevoEstado = document.querySelector("#estadoServicio").value; // Obtener el nuevo estado del select
 
     const cita = citas.find((cita) => cita.id === id);
     if (cita) {
         cita.estado = nuevoEstado;
-        cargarCitas();
+        cargarCitas(); // Recargar la tabla de citas
         $('#modificarEstadoCita').modal('hide'); // Cerrar modal
-        alert("Estado actualizado correctamente");
+        mostrarToast("Estado actualizado correctamente", "#4CAF50"); // Alerta de éxito
     }
 });
+
+// Función para mostrar alertas personalizadas
+function mostrarToast(mensaje, color = "#092e95") {
+    const alertaDiv = document.createElement("div");
+    alertaDiv.classList.add("alerta");
+
+    const textoDiv = document.createElement("div");
+    textoDiv.classList.add("texto");
+    textoDiv.textContent = mensaje;
+
+    alertaDiv.style.backgroundColor = color;
+
+    const btnCerrar = document.createElement("button");
+    btnCerrar.classList.add("btn-cerrar");
+    btnCerrar.innerHTML = '&times;';
+    btnCerrar.addEventListener("click", () => {
+        alertaDiv.classList.remove("mostrar");
+        alertaDiv.classList.add("ocultar");
+        setTimeout(() => alertaDiv.remove(), 500);
+    });
+
+    const iconoDiv = document.createElement("div");
+    iconoDiv.classList.add("icono");
+    iconoDiv.innerHTML = "&#x1f3e5;";
+
+    alertaDiv.appendChild(iconoDiv);
+    alertaDiv.appendChild(textoDiv);
+    alertaDiv.appendChild(btnCerrar);
+
+    document.body.appendChild(alertaDiv);
+
+    setTimeout(() => alertaDiv.classList.add("mostrar"), 10);
+
+    setTimeout(() => {
+        alertaDiv.classList.remove("mostrar");
+        alertaDiv.classList.add("ocultar");
+        setTimeout(() => alertaDiv.remove(), 500);
+    }, 3000);
+}
 
 // Inicializar la tabla al cargar la página
 cargarCitas();

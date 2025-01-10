@@ -1,4 +1,4 @@
-async function obtenerAgendas() {
+async function obtenerCitas() {
     const token = localStorage.getItem('jwt');
     console.log("Token JWT obtenido:", token);
 
@@ -8,7 +8,7 @@ async function obtenerAgendas() {
         return;
     }
 
-    const url = 'http://localhost:8080/agenda/all'; // Cambiar a la URL real de tu API
+    const url = 'http://localhost:8080/citas/all'; // Cambiar a la URL real de tu API
 
     try {
         const response = await fetch(url, {
@@ -25,40 +25,39 @@ async function obtenerAgendas() {
         const data = await response.json();
         console.log('Datos recibidos:', data);
 
-        const tableBody = document.getElementById('agendasTableBody');
+        const tableBody = document.getElementById('citasTableBody');
         tableBody.innerHTML = '';
 
         // Iterar por los datos y crear las filas
-        data.result.forEach(agenda => {
-            const estadoActivo = agenda.status;
+        data.result.forEach(cita => {
+            const estadoActivo = cita.estado === 'activo';
             const estadoClase = estadoActivo ? 'btn-success' : 'btn-danger';
             const estadoTexto = estadoActivo ? 'Activo' : 'Inactivo';
 
             const row = `
                 <tr align="center">
-                    <td>${agenda.dia}</td>
-                    <td>${agenda.hora}</td>
-                    <td>${agenda.ubicacion}</td>
-                    <td>${agenda.motivo}</td>
+                    <td>${cita.dia}</td>
+                    <td>${cita.hora}</td>
+                    <td>${cita.ubicacion}</td>
+                    <td>${cita.motivo}</td>
                     <td>
                         <button class="btn btn-sm ${estadoClase}" 
-                            data-id="${agenda.id}" 
-                            data-status="${agenda.status}" 
+                            data-id="${cita.id}" 
+                            data-estado="${cita.estado}" 
                             data-toggle="modal" 
-                            data-target="#modificarEstadoAgenda">
+                            data-target="#modificarEstadoCita">
                             <i class="fas fa-sync-alt"></i> ${estadoTexto}
                         </button>
                     </td>
                     <td>
                         <button class="btn btn-sm btn-primary btnIcono" 
-                            data-id="${agenda.id}" 
-                            data-dia="${agenda.dia}" 
-                            data-hora="${agenda.hora}" 
-                            data-ubicacion="${agenda.ubicacion}" 
-                            data-motivo="${agenda.motivo}" 
-                            data-status="${agenda.status}" 
+                            data-id="${cita.id}" 
+                            data-dia="${cita.dia}" 
+                            data-hora="${cita.hora}" 
+                            data-ubicacion="${cita.ubicacion}" 
+                            data-motivo="${cita.motivo}" 
                             data-toggle="modal" 
-                            data-target="#modificarAgenda">
+                            data-target="#modificarCita">
                             <i class="fas fa-edit"></i>
                         </button>
                     </td>
@@ -67,7 +66,7 @@ async function obtenerAgendas() {
             tableBody.innerHTML += row;
         });
 
-        configurarFiltros();
+        configurarFiltrosCitas();
 
     } catch (error) {
         console.error('Hubo un problema con la solicitud:', error);
@@ -75,27 +74,27 @@ async function obtenerAgendas() {
     }
 }
 
-function configurarFiltros() {
-    const filterDay = document.getElementById('filterDay');
-    const filterStatus = document.getElementById('filterStatus');
+function configurarFiltrosCitas() {
+    const filterMotivo = document.getElementById('filterMotivo');
+    const filterEstado = document.getElementById('filterEstado');
 
-    filterDay.addEventListener('input', aplicarFiltros);
-    filterStatus.addEventListener('change', aplicarFiltros);
+    filterMotivo.addEventListener('input', aplicarFiltrosCitas);
+    filterEstado.addEventListener('change', aplicarFiltrosCitas);
 }
 
-function aplicarFiltros() {
-    const filterDay = document.getElementById('filterDay').value.toLowerCase();
-    const filterStatus = document.getElementById('filterStatus').value.toLowerCase();
+function aplicarFiltrosCitas() {
+    const filterMotivo = document.getElementById('filterMotivo').value.toLowerCase();
+    const filterEstado = document.getElementById('filterEstado').value.toLowerCase();
 
-    const filas = document.querySelectorAll('#agendasTableBody tr');
+    const filas = document.querySelectorAll('#citasTableBody tr');
     filas.forEach(fila => {
-        const dia = fila.children[0].textContent.toLowerCase();
+        const motivo = fila.children[3].textContent.toLowerCase();
         const estado = fila.children[4].textContent.trim().toLowerCase();
 
-        const coincideDia = !filterDay || dia.includes(filterDay);
-        const coincideEstado = !filterStatus || estado === filterStatus;
+        const coincideMotivo = !filterMotivo || motivo.includes(filterMotivo);
+        const coincideEstado = !filterEstado || estado === filterEstado;
 
-        fila.style.display = coincideDia && coincideEstado ? '' : 'none';
+        fila.style.display = coincideMotivo && coincideEstado ? '' : 'none';
     });
 }
 
@@ -120,7 +119,7 @@ function mostrarToast(mensaje, color = "#092e95") {
 
     const iconoDiv = document.createElement("div");
     iconoDiv.classList.add("icono");
-    iconoDiv.innerHTML = "&#x1f4c5;";
+    iconoDiv.innerHTML = "&#x1f4c5;"; // Icono de calendario
 
     alertaDiv.appendChild(iconoDiv);
     alertaDiv.appendChild(textoDiv);
@@ -138,4 +137,4 @@ function mostrarToast(mensaje, color = "#092e95") {
 }
 
 // Llamar para obtener los datos
-obtenerAgendas();
+obtenerCitas();
