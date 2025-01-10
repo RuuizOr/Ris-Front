@@ -23,22 +23,13 @@ function mostrarAlerta(mensaje, tipo = 'info') {
 
 // Función para obtener y mostrar los usuarios
 async function obtenerUsuarios() {
-    const token = localStorage.getItem('jwt');
-    console.log("Token JWT obtenido:", token);
 
-    if (!token) {
-        console.log('No se encontró el token en el localStorage');
-        mostrarAlerta('No se encontró el token. Por favor, inicie sesión.', 'error');
-        return;
-    }
-
-    const url = 'http://localhost:8080/usuarios/all';
+    const url = 'http://localhost:8080/medicos/all';
 
     try {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
@@ -61,15 +52,15 @@ async function obtenerUsuarios() {
             const row = `
                 <tr align="center">
                     <td>${usuario.nombre}</td>
-                    <td>${usuario.email}</td>
-                    <td>${usuario.telefono}</td>
-                    <td>${rol}</td>
+                    <td>${usuario.apellido}</td>
+                    <td>${usuario.especialidade}</td>
+                   
                     <td>
                         <button class="btn btn-sm ${usuario.status ? 'btn-success' : 'btn-danger'}"
                             data-id="${usuario.id}" 
                             data-estado="${usuario.status}" 
                             data-toggle="modal" 
-                            data-target="#modificarEstadoServicio">
+                            data-target="#modificarEstadoMedico">
                             <i class="fas fa-sync-alt"></i> ${usuario.status ? "Activo" : "Inactivo"}
                         </button>
                     </td>
@@ -77,29 +68,14 @@ async function obtenerUsuarios() {
                         <button class="btn btn-sm btn-primary btnIcono"
                             data-id="${usuario.id}" 
                             data-nombre="${usuario.nombre}" 
-                            data-apellidos="${usuario.apellidos}"
-                            data-correo="${usuario.email}"  
-                            data-telefono="${usuario.telefono}" 
-                            data-contrasena="${usuario.contraseña}" 
-                            data-rol="${usuario.admin === "ROLE_ADMIN" ? 'admin' : 'usuario'}" 
+                            data-apellidos="${usuario.apellido}"
+                            data-especialidad="${usuario.especialidade}"
                             data-estado="${usuario.status}" 
                             data-toggle="modal" 
-                            data-target="#modificarUsuario">
+                            data-target="#modificarMedico">
                             <i class="fas fa-edit"></i>
                         </button>
                     </td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary btnAsignarVehiculo" data-id="${usuario.id}">
-                            Asignar Vehículo
-                        </button>
-                    </td>
-                     <td>
-                         <button class="btn btn-sm btn-info btnVerServicios" 
-                                    data-id="${usuario.id}" data-servicios='${vehiculosHTML}'>
-                                <i class="fa-solid fa-eye"></i>
-                            </button>
-                    </td>
-
                 </tr>
             `;
             usuariosTableBody.insertAdjacentHTML('beforeend', row);
@@ -107,8 +83,7 @@ async function obtenerUsuarios() {
 
         agregarEventos();
     } catch (error) {
-        console.error('Hubo un problema con la solicitud:', error);
-        mostrarAlerta('Ocurrió un error al intentar obtener los datos de los usuarios.', 'error');
+    
     }
 }
 

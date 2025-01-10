@@ -22,26 +22,24 @@ function mostrarAlerta(mensaje, tipo = 'info') {
 }
 
 // Configuración del modal para modificar usuario
-$('#modificarUsuario').on('show.bs.modal', function (event) {
+$('#modificarMedico').on('show.bs.modal', function (event) {
     const button = $(event.relatedTarget); // Botón que activó el modal
 
     // Capturar los datos del botón
     const id = button.data('id') || '';
     const nombre = button.data('nombre') || '';
     const apellidos = button.data('apellidos') || '';
-    const email = button.data('correo') || '';
-    const telefono = button.data('telefono') || '';
-    const contrasena = button.data('contrasena') || '';
-    const rol = button.data('rol') || '';
+    // const email = button.data('correo') || '';
+    const especialidad = button.data('especialidad') || '';
+    // const contrasena = button.data('contrasena') || '';
+    // const rol = button.data('rol') || '';
 
     // Asignar los valores a los campos del formulario
     $('#idUsuarioMod').val(id);
     $('#nombreMod').val(nombre);
     $('#apellidosMod').val(apellidos);
-    $('#emailMod').val(email);
-    $('#telefonoMod').val(telefono);
-    $('#contrasenaMod').val(contrasena);
-    $('#rolMod').val(rol);
+    $('#especialidadMod').val(especialidad);
+    
 });
 
 // Función para editar un usuario
@@ -49,33 +47,30 @@ async function editarUsuario(event) {
     event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
 
     // Obtener el token JWT desde localStorage
-    const token = localStorage.getItem('jwt');
-    if (!token) {
-        mostrarAlerta('No se encontró el token. Por favor, inicie sesión.', 'error');
-        return;
-    }
+    // const token = localStorage.getItem('jwt');
+    // if (!token) {
+    //     mostrarAlerta('No se encontró el token. Por favor, inicie sesión.', 'error');
+    //     return;
+    // }
 
     // URL de la API
-    const url = 'http://localhost:8080/usuarios/actualizar';
+    const url = 'http://localhost:8080/medicos/update';
 
     // Obtener los datos del formulario
     const idUsuario = document.getElementById('idUsuarioMod').value.trim();
     const nombre = document.getElementById('nombreMod').value.trim();
     const apellidos = document.getElementById('apellidosMod').value.trim();
-    const email = document.getElementById('emailMod').value.trim();
-    const telefono = document.getElementById('telefonoMod').value.trim();
-    const contraseña = document.getElementById('contrasenaMod').value.trim();
-    const rol = document.getElementById('rolMod').value.trim();
+    const especialidad = document.getElementById("especialidadMod").value.trim();
+    
+
+
 
     // Crear el objeto de usuario
     const usuario = {
         id: idUsuario,
         nombre: nombre,
-        apellidos: apellidos,
-        email: email,
-        telefono: telefono,
-        contraseña: contraseña,
-        admin: rol === 'admin' ? 'ROLE_ADMIN' : 'ROLE_USER',
+        apellido: apellidos,
+        especialidade:especialidad,
         status: true
     };
 
@@ -84,14 +79,14 @@ async function editarUsuario(event) {
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                // 'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(usuario)
         });
-
-        if (response.ok) {
+        location.reload();
+        if (!response.ok) {
             const data = await response.json();
             mostrarAlerta('Usuario actualizado exitosamente', 'success');
             // Opcional: cerrar el modal y limpiar el formulario
@@ -109,4 +104,4 @@ async function editarUsuario(event) {
 }
 
 // Agregar el evento al formulario
-document.getElementById('formModificarUsuario').addEventListener('submit', editarUsuario);
+document.getElementById('formModificarMedico').addEventListener('submit', editarUsuario);

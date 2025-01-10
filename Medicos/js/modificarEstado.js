@@ -1,5 +1,5 @@
 // Manejar el evento de apertura del modal
-$('#modificarEstadoServicio').on('show.bs.modal', function (event) {
+$('#modificarEstadoMedico').on('show.bs.modal', function (event) {
     const button = $(event.relatedTarget); // Botón que abrió el modal
     const idUsuario = button.data('id'); // ID del usuario
     const estadoActual = button.data('estado'); // Estado actual del usuario
@@ -17,17 +17,17 @@ $('#formModificarEstado').on('submit', async function (e) {
     const nuevoEstado = $('#estadoUsuario').val();
 
     // Token JWT desde localStorage
-    const token = localStorage.getItem('jwt');
-    if (!token) {
-        mostrarAlerta('No se encontró el token. Por favor, inicie sesión.', 'error');
-        return;
-    }
+    // const token = localStorage.getItem('jwt');
+    // if (!token) {
+    //     mostrarAlerta('No se encontró el token. Por favor, inicie sesión.', 'error');
+    //     return;
+    // }
 
     try {
-        const response = await fetch('http://localhost:8080/usuarios/status', {
+        const response = await fetch('http://localhost:8080/medicos/change-status', {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                // 'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
