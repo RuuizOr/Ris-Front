@@ -1,0 +1,55 @@
+.alerta {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: auto;
+    max-width: 400px;
+    z-index: 1050;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    background: #092e95;
+    justify-content: center; /* Centra el contenido */
+}
+
+.alerta.mostrar {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.alerta.ocultar {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.alerta .btn-cerrar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: inherit;
+    z-index: 1060; /* Asegura que la X quede encima del contenido */
+}
+
+.alerta .btn-cerrar .fa {
+    font-size: 1.2em;
+}
+
+.alerta .icono {
+    margin-right: 15px;
+    font-size: 1.5em;
+}
+
+.alerta .texto {
+    margin-left: 10px; /* Ajusta el espacio entre el icono y el texto */
+    padding-right: 30px; /* Añade espacio para la X de cierre */
+}

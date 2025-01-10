@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorias de Servicios</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="shortcut icon" type="image/x-icon" href="../Pacientes/img/Paciente.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/estilosModal.css">
+    <link rel="stylesheet" href="css/estilosTabla.css">
+    <link rel="stylesheet" href="css/alertas.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>        -->
+
+    <script src="https://kit.fontawesome.com/8f2cb0ebcf.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="wrapper" style="height: 100vh;">
+        <aside id="sidebar">
+            <div class="d-flex">
+                <button class="toggle-btn logo" type="button">
+                    <img class="imagenLogo" src="../Medicos/img/h.png">
+                </button>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="../InicioAdmin/InicioAdmin.html" class="sidebar-link">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Inicio</span>
+                    </a>
+                    <div class="tooltip">Inicio</div>
+                </li>
+                <li class="sidebar-item">
+                    <a href="../Medicos/Medicos.html" class="sidebar-link">
+                        <i class="fa-solid fa-user-doctor"></i>
+                        <span>Medicos</span>
+                    </a>
+                    <div class="tooltip">Medicos</div>
+                </li>
+                <li class="sidebar-item">
+                    <a href="../Pacientes/Pacientes.html" class="sidebar-link">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Pacientes</span>
+                    </a>
+                    <div class="tooltip">Pacientes</div>
+                </li>
+                <li class="sidebar-item">
+                    <a href="../Agenda/Agenda.html" class="sidebar-link">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Agenda</span>
+                    </a>
+                    <div class="tooltip">Agenda</div>
+                </li>
+            </ul>             
+        </aside>
+
+        <!-- Cuerpo de la página -->
+        <div class="main">
+            <!-- Video de fondo en la clase main -->
+            <video id="videoBackground" autoplay muted loop>
+                <source src="../Medicos/img/hh.mp4" type="video/mp4">
+            </video>
+
+            <div class="container mt-4 text-center">
+                <h1 class="mb-4 text-light">Pacientes</h1>
+                
+                <!-- Filtros y botón de registro -->
+                <div class="row mb-3 justify-content-center">
+                    <div class="col-md-3">
+                        <input type="text" id="filterName" class="form-control" placeholder="Buscar por nombre">
+                    </div>
+                    <div class="col-md-3">
+                        <select id="filterState" class="custom-select" required>
+                            <option value="">Estado</option>
+                            <option id="activo" value="Activo">Activo</option>
+                            <option value="inactivo">No Activo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btnIcono w-100" data-toggle="modal" id="registrar" data-target="#registrarPaciente" style="display: flex; justify-content: space-evenly; align-items: center">
+                            Registrar paciente <i class="fa-solid fa-user"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabla de datos del servicio -->
+                <div class="container-xxl tabla mt-5">
+                    <table class="table" id="example">
+                        <thead class="thead-light">
+                            <tr align="center">
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Teléfono</th>
+                                <th>Estado</th>
+                                <th>Editar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="aspirantesTableBody">
+                            <!-- Aquí se llenarán dinámicamente las filas -->
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+        <!-- Modal para registrar un paciente -->
+        <div class="modal fade" id="registrarPaciente" tabindex="-1" role="dialog" aria-labelledby="registrarPacienteLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registrarPacienteLabel">Registrar Paciente</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formRegistrarPaciente" action="javascript:void(0);">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="nombre" name="nombre" maxlength="50" placeholder=" " required>
+                                <label for="nombre" class="col-form-label">Nombre:</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="apellidos" name="apellidos" maxlength="50" placeholder=" " required>
+                                <label for="apellidos" class="col-form-label">Apellidos:</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="telefono" name="telefono" maxlength="50" placeholder=" " required>
+                                <label for="telefono" class="col-form-label">Teléfono:</label>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" id="registrar2">Registrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    
+        <!-- Modal para modificar el paciente -->
+        <div class="modal fade" id="modificarPaciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Editar Paciente</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formModificarPaciente" action="javascript:void(0);">
+                            <input type="hidden" id="idMod" name="idMod"> <!-- Campo oculto para el ID -->
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="nombreMod" name="nombreMod" maxlength="50" placeholder=" ">
+                                <label for="nombreMod" class="col-form-label">Nombre:</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="apellidosMod" name="apellidosMod" maxlength="50" placeholder=" " required>
+                                <label for="apellidosMod" class="col-form-label">Apellidos:</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="telefonoMod" name="telefonoMod" maxlength="50" placeholder=" " required>
+                                <label for="telefonoMod" class="col-form-label">Teléfono:</label>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="actualizaract" class="btn btn-primary">Actualizar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    <!-- Modal para modificar estado del paciente -->
+    <div class="modal fade" id="modificarEstadoPaciente" tabindex="-1" role="dialog" aria-labelledby="customModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog custom-modal-dialog" role="document">
+            <div class="modal-content custom-modal-content">
+                <div class="modal-header custom-modal-header">
+                    <h5 class="modal-title custom-modal-title">Actualizar Estado</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body custom-modal-body">
+                    <form id="formModificarEstadoPaciente">
+                        <input id="idCategoria" name="idCategoria" type="hidden"> <!-- Campo oculto -->
+                        <input id="estadoCategoria" name="estadoCategoria" type="hidden"> <!-- Campo oculto -->
+                        <h6>¿Estás seguro de actualizar el estado?</h6>
+                        <div class="modal-footer custom-modal-footer">
+                            <button id="actualizarStatus" type="submit" class="btn btn-primary">Actualizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <!-- Scripts utilizados -->
+     
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/consumo.js"></script>
+    <script src="js/registrar.js"></script>
+    <script src="js/editar.js"></script>
+    <script src="js/modificarEstado.js"></script>
+    
+</body>
+</html>
+
+
