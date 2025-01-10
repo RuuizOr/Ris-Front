@@ -1,7 +1,8 @@
 $(document).ready(function () {
-    const formModificarEstado = $('#formModificarEstadoCate');
-    const modalModificarEstado = $('#modificarEstadoServicio');
+    const formModificarEstado = $('#formModificarEstadoPaciente');
+    const modalModificarEstado = $('#modificarEstadoPaciente');
 
+    // Mostrar modal y asignar datos
     $(document).on('click', '.btn-success, .btn-danger', function () {
         const button = $(this);
         const id = button.data('id');
@@ -14,20 +15,21 @@ $(document).ready(function () {
         modalModificarEstado.modal('show');
     });
 
+    // Manejar la solicitud de cambio de estado
     formModificarEstado.on('submit', async function (event) {
         event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
 
         const token = localStorage.getItem('jwt');
         if (!token) {
-            mostrarToast('No se encontró el token. Por favor, inicie sesión.', '#f44336');
+            mostrarToast('No se encontró el token. Por favor, inicie sesión.', 'error');
             return;
         }
 
-        const url = 'http://localhost:8080/CategoriasDeServicios/status';
-        const id = $('#idCategoria').val();
-        const estado = $('#estadoCategoria').val() === 'true';
+        const url = 'http://localhost:8080/paciente/change-status';
+        const idPaciente = $('#idCategoria').val();
+        const nuevoEstado = $('#estadoCategoria').val() === 'true';
 
-        const payload = { id, status: estado };
+        const payload = { id: idPaciente, status: nuevoEstado };
 
         try {
             const response = await fetch(url, {
@@ -40,33 +42,36 @@ $(document).ready(function () {
                 body: JSON.stringify(payload),
             });
 
-            if (!response.ok) {
-                throw new Error('Error al cambiar el estado: ' + response.statusText);
+            if (response.ok) {
+                mostrarToast('Estado actualizado correctamente.', 'success');
+                modalModificarEstado.modal('hide');
+                limpiarModal();
+                obtenerPacientes(); // Actualiza la lista de pacientes
+            } else {
+                const errorData = await response.json();
+                mostrarToast('Error al cambiar el estado: ' + (errorData.message || 'Intenta nuevamente.'), 'error');
             }
-
-            mostrarToast('Estado actualizado correctamente.', '#4caf50');
-            modalModificarEstado.modal('hide');
-            limpiarModal();
-            obtenerCategorias();
         } catch (error) {
             console.error('Error al intentar cambiar el estado:', error);
-            mostrarToast('Ocurrió un error al intentar cambiar el estado.', '#f44336');
+            mostrarToast('Ocurrió un error al intentar cambiar el estado.', 'error');
         }
     });
 
+    // Función para limpiar modal
     function limpiarModal() {
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
     }
 
+    // Función para mostrar mensaje tipo toast
     function mostrarToast(mensaje, tipo = 'success') {
-        const alertaDiv = $('<div>').addClass('alerta').css('backgroundColor', tipo === 'success' ? '#092e95' : '#092e95');
+        const alertaDiv = $('<div>').addClass('alerta').css('backgroundColor', tipo === 'success' ? '#4caf50' : '#f44336');
         const textoDiv = $('<div>').addClass('texto').text(mensaje);
         const btnCerrar = $('<button>').addClass('btn-cerrar').html('&times;').on('click', function () {
             alertaDiv.removeClass('mostrar').addClass('ocultar');
             setTimeout(() => alertaDiv.remove(), 500);
         });
-        const iconoDiv = $('<div>').addClass('icono').html('&#x1f3e5;').css('color', '#092e95');
+        const iconoDiv = $('<div>').addClass('icono').html('&#x1f3e5;').css('color', tipo === 'success' ? '#4caf50' : '#f44336');
 
         alertaDiv.append(iconoDiv, textoDiv, btnCerrar);
         $('body').append(alertaDiv);
