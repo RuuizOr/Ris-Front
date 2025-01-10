@@ -1,18 +1,18 @@
 $(document).ready(function () {
-    const formModificarEstado = $('#formModificarEstadoPaciente');
-    const modalModificarEstado = $('#modificarEstadoPaciente');
+    const formModificarEstado = $('#formModificarEstadoAgenda');
+    const modalModificarEstado = $('#modificarEstadoAgenda');
 
     // Mostrar modal y asignar datos
     $(document).on('click', '.btn-success, .btn-danger', function () {
         const button = $(this);
-        const id = button.data('id');
-        const estadoActual = button.data('estado') === true;
-        const nuevoEstado = !estadoActual;
+        const id = button.data('id'); // Obtener ID del botón
+        const estadoActual = button.data('estado') === true; // Convertir a booleano
+        const nuevoEstado = !estadoActual; // Invertir el estado actual
 
-        $('#idCategoria').val(id);
-        $('#estadoCategoria').val(nuevoEstado);
+        $('#idAgenda').val(id); // Asignar el ID al campo oculto
+        $('#estadoAgenda').val(nuevoEstado); // Asignar el nuevo estado
 
-        modalModificarEstado.modal('show');
+        modalModificarEstado.modal('show'); // Mostrar el modal
     });
 
     // Manejar la solicitud de cambio de estado
@@ -25,11 +25,11 @@ $(document).ready(function () {
             return;
         }
 
-        const url = 'http://localhost:8080/paciente/change-status';
-        const idPaciente = $('#idCategoria').val();
-        const nuevoEstado = $('#estadoCategoria').val() === 'true';
+        const url = 'http://localhost:8080/agenda/change-status'; // URL del endpoint
+        const idAgenda = $('#idAgenda').val(); // ID del elemento agenda
+        const nuevoEstado = $('#estadoAgenda').val() === 'true'; // Convertir a booleano
 
-        const payload = { id: idPaciente, status: nuevoEstado };
+        const payload = { id: idAgenda, status: nuevoEstado }; // Crear el payload para el PUT
 
         try {
             const response = await fetch(url, {
@@ -39,14 +39,14 @@ $(document).ready(function () {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(payload),
+                body: JSON.stringify(payload), // Enviar los datos en formato JSON
             });
 
             if (response.ok) {
-                mostrarToast('Estado actualizado correctamente.', 'success');
-                modalModificarEstado.modal('hide');
+                mostrarToast('Estado de la agenda actualizado correctamente.', 'success');
+                modalModificarEstado.modal('hide'); // Ocultar el modal
                 limpiarModal();
-                obtenerPacientes(); // Actualiza la lista de pacientes
+                obtenerAgendas(); // Actualizar la lista de agendas
             } else {
                 const errorData = await response.json();
                 mostrarToast('Error al cambiar el estado: ' + (errorData.message || 'Intenta nuevamente.'), 'error');
@@ -71,7 +71,7 @@ $(document).ready(function () {
             alertaDiv.removeClass('mostrar').addClass('ocultar');
             setTimeout(() => alertaDiv.remove(), 500);
         });
-        const iconoDiv = $('<div>').addClass('icono').html('&#x1f3e5;').css('color', tipo === 'success' ? '#4caf50' : '#f44336');
+        const iconoDiv = $('<div>').addClass('icono').html('&#x1f5d3;').css('color', tipo === 'success' ? '#4caf50' : '#f44336');
 
         alertaDiv.append(iconoDiv, textoDiv, btnCerrar);
         $('body').append(alertaDiv);
@@ -82,4 +82,6 @@ $(document).ready(function () {
             setTimeout(() => alertaDiv.remove(), 500);
         }, 3000);
     }
+
+    
 });

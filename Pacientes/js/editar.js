@@ -1,20 +1,23 @@
 $(document).ready(function () {
-    $('#modificarCategoria').on('show.bs.modal', function (event) {
+    // Configurar el modal al abrirse
+    $('#modificarPaciente').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget); // Botón que activó el modal
 
         // Capturar los datos del botón
         const id = button.data('id') || '';
         const nombre = button.data('nombre') || '';
-        const descripcion = button.data('descripcion') || '';
+        const apellidos = button.data('apellidos') || '';
+        const telefono = button.data('telefono') || '';
 
         // Asignar los valores a los campos del formulario
         $('#idMod').val(id);
         $('#nombreMod').val(nombre);
-        $('#descripcionMod').val(descripcion);
+        $('#apellidosMod').val(apellidos);
+        $('#telefonoMod').val(telefono);
     });
 
-    // Función para actualizar la categoría
-    async function actualizarCategoria(event) {
+    // Función para actualizar el paciente
+    async function actualizarPaciente(event) {
         event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
 
         const token = localStorage.getItem('jwt');
@@ -23,16 +26,20 @@ $(document).ready(function () {
             return;
         }
 
-        const url = 'http://localhost:8080/CategoriasDeServicios/actualizar';
+        const url = 'http://localhost:8080/paciente/update';
 
-        const idCategoria = $('#idMod').val().trim();
-        const nombreCategoria = $('#nombreMod').val().trim();
-        const descripcionCategoria = $('#descripcionMod').val().trim();
+        // Capturar los valores del formulario
+        const idPaciente = $('#idMod').val().trim();
+        const nombrePaciente = $('#nombreMod').val().trim();
+        const apellidosPaciente = $('#apellidosMod').val().trim();
+        const telefonoPaciente = $('#telefonoMod').val().trim();
 
-        const categoria = {
-            id: idCategoria,
-            nombre: nombreCategoria,
-            descripcion: descripcionCategoria
+        // Crear el objeto con los datos del paciente
+        const paciente = {
+            id: idPaciente,
+            nombre: nombrePaciente,
+            apellidos: apellidosPaciente,
+            telefono: telefonoPaciente
         };
 
         try {
@@ -43,26 +50,26 @@ $(document).ready(function () {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(categoria)
+                body: JSON.stringify(paciente)
             });
 
             if (response.ok) {
                 const data = await response.json();
-                mostrarToast('Categoría actualizada exitosamente', 'success');
-                $('#modificarCategoria').modal('hide');
-                $('#formModificarCategoria')[0].reset();
-                obtenerCategorias();
+                mostrarToast('Paciente actualizado exitosamente.', 'success');
+                $('#modificarPaciente').modal('hide');
+                $('#formModificarPaciente')[0].reset();
+                obtenerPacientes(); // Actualizar la lista de pacientes
             } else {
                 const errorData = await response.json();
-                mostrarToast('Error al actualizar la categoría: ' + (errorData.message || 'Verifique los datos ingresados'), 'error');
+                mostrarToast('Error al actualizar el paciente: ' + (errorData.message || 'Verifique los datos ingresados'), 'error');
             }
         } catch (error) {
-            mostrarToast('Ocurrió un error al intentar actualizar la categoría.', 'error');
+            mostrarToast('Ocurrió un error al intentar actualizar el paciente.', 'error');
         }
     }
 
     // Agregar el evento al formulario
-    $('#formModificarCategoria').on('submit', actualizarCategoria);
+    $('#formModificarPaciente').on('submit', actualizarPaciente);
 
     // Función para mostrar el mensaje tipo toast
     function mostrarToast(mensaje, tipo = 'success') {

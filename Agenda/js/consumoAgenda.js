@@ -1,4 +1,4 @@
-async function obtenerPacientes() {
+async function obtenerAgendas() {
     const token = localStorage.getItem('jwt');
     console.log("Token JWT obtenido:", token);
 
@@ -8,7 +8,7 @@ async function obtenerPacientes() {
         return;
     }
 
-    const url = 'http://localhost:8080/paciente/all'; // Cambiar a la URL real de tu API
+    const url = 'http://localhost:8080/agenda/all'; // Cambiar a la URL real de tu API
 
     try {
         const response = await fetch(url, {
@@ -25,37 +25,40 @@ async function obtenerPacientes() {
         const data = await response.json();
         console.log('Datos recibidos:', data);
 
-        const tableBody = document.getElementById('pacientesTableBody');
+        const tableBody = document.getElementById('agendasTableBody');
         tableBody.innerHTML = '';
 
         // Iterar por los datos y crear las filas
-        data.result.forEach(paciente => {
-            const estadoActivo = paciente.estado === 'activo';
+        data.result.forEach(agenda => {
+            const estadoActivo = agenda.status;
             const estadoClase = estadoActivo ? 'btn-success' : 'btn-danger';
             const estadoTexto = estadoActivo ? 'Activo' : 'Inactivo';
 
             const row = `
                 <tr align="center">
-                    <td>${paciente.nombre}</td>
-                    <td>${paciente.apellidos}</td>
-                    <td>${paciente.telefono}</td>
+                    <td>${agenda.dia}</td>
+                    <td>${agenda.hora}</td>
+                    <td>${agenda.ubicacion}</td>
+                    <td>${agenda.motivo}</td>
                     <td>
                         <button class="btn btn-sm ${estadoClase}" 
-                            data-id="${paciente.id}" 
-                            data-estado="${paciente.estado}" 
+                            data-id="${agenda.id}" 
+                            data-status="${agenda.status}" 
                             data-toggle="modal" 
-                            data-target="#modificarEstadoPaciente">
+                            data-target="#modificarEstadoAgenda">
                             <i class="fas fa-sync-alt"></i> ${estadoTexto}
                         </button>
                     </td>
                     <td>
                         <button class="btn btn-sm btn-primary btnIcono" 
-                            data-id="${paciente.id}" 
-                            data-nombre="${paciente.nombre}" 
-                            data-apellidos="${paciente.apellidos}" 
-                            data-telefono="${paciente.telefono}" 
+                            data-id="${agenda.id}" 
+                            data-dia="${agenda.dia}" 
+                            data-hora="${agenda.hora}" 
+                            data-ubicacion="${agenda.ubicacion}" 
+                            data-motivo="${agenda.motivo}" 
+                            data-status="${agenda.status}" 
                             data-toggle="modal" 
-                            data-target="#modificarPaciente">
+                            data-target="#modificarAgenda">
                             <i class="fas fa-edit"></i>
                         </button>
                     </td>
@@ -73,26 +76,26 @@ async function obtenerPacientes() {
 }
 
 function configurarFiltros() {
-    const filterName = document.getElementById('filterName');
-    const filterState = document.getElementById('filterState');
+    const filterDay = document.getElementById('filterDay');
+    const filterStatus = document.getElementById('filterStatus');
 
-    filterName.addEventListener('input', aplicarFiltros);
-    filterState.addEventListener('change', aplicarFiltros);
+    filterDay.addEventListener('input', aplicarFiltros);
+    filterStatus.addEventListener('change', aplicarFiltros);
 }
 
 function aplicarFiltros() {
-    const filterName = document.getElementById('filterName').value.toLowerCase();
-    const filterState = document.getElementById('filterState').value.toLowerCase();
+    const filterDay = document.getElementById('filterDay').value.toLowerCase();
+    const filterStatus = document.getElementById('filterStatus').value.toLowerCase();
 
-    const filas = document.querySelectorAll('#pacientesTableBody tr');
+    const filas = document.querySelectorAll('#agendasTableBody tr');
     filas.forEach(fila => {
-        const nombre = fila.children[0].textContent.toLowerCase();
-        const estado = fila.children[3].textContent.trim().toLowerCase();
+        const dia = fila.children[0].textContent.toLowerCase();
+        const estado = fila.children[4].textContent.trim().toLowerCase();
 
-        const coincideNombre = !filterName || nombre.includes(filterName);
-        const coincideEstado = !filterState || estado === filterState;
+        const coincideDia = !filterDay || dia.includes(filterDay);
+        const coincideEstado = !filterStatus || estado === filterStatus;
 
-        fila.style.display = coincideNombre && coincideEstado ? '' : 'none';
+        fila.style.display = coincideDia && coincideEstado ? '' : 'none';
     });
 }
 
@@ -117,7 +120,7 @@ function mostrarToast(mensaje, color = "#092e95") {
 
     const iconoDiv = document.createElement("div");
     iconoDiv.classList.add("icono");
-    iconoDiv.innerHTML = "&#x1f3e5;";
+    iconoDiv.innerHTML = "&#x1f4c5;";
 
     alertaDiv.appendChild(iconoDiv);
     alertaDiv.appendChild(textoDiv);
@@ -135,4 +138,4 @@ function mostrarToast(mensaje, color = "#092e95") {
 }
 
 // Llamar para obtener los datos
-obtenerPacientes();
+obtenerAgendas();

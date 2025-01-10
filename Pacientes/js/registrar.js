@@ -1,10 +1,11 @@
-// Función para registrar una nueva categoría de servicio
-async function registrarCategoria() {
+// Función para registrar un nuevo paciente
+async function registrarPaciente() {
   const nombre = document.getElementById('nombre').value;
-  const descripcion = document.getElementById('descripcion').value;
+  const apellidos = document.getElementById('apellidos').value;
+  const telefono = document.getElementById('telefono').value;
 
   // Verificar si los campos están vacíos
-  if (!nombre || !descripcion) {
+  if (!nombre || !apellidos || !telefono) {
     mostrarToast('Por favor, complete todos los campos.', '#092e95'); // Azul en lugar de rojo
     return;
   }
@@ -17,17 +18,18 @@ async function registrarCategoria() {
     return;
   }
 
-  // Crear el objeto que se enviará al backend, incluyendo el estado activo (true)
-  const categoriaData = {
+  // Crear el objeto que se enviará al backend
+  const pacienteData = {
     nombre: nombre,
-    descripcion: descripcion,
-    estado: true  // Estado activo
+    apellidos: apellidos,
+    telefono: telefono,
+    estado: true // Estado activo
   };
 
-  const url = 'http://localhost:8080/CategoriasDeServicios/save';  // URL del endpoint
+  const url = 'http://localhost:8080/paciente/save'; // URL del endpoint
 
   try {
-    // Realizar la solicitud POST con el token en el encabezado y los datos de la categoría
+    // Realizar la solicitud POST con el token en el encabezado y los datos del paciente
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -35,76 +37,35 @@ async function registrarCategoria() {
         'Accept': 'application/json',         // Aceptar respuesta en formato JSON
         'Content-Type': 'application/json'    // Especificar que enviamos/recibimos JSON
       },
-      body: JSON.stringify(categoriaData) // Enviar los datos en formato JSON
+      body: JSON.stringify(pacienteData) // Enviar los datos en formato JSON
     });
 
     // Verificar si la respuesta fue exitosa
     if (!response.ok) {
       const errorMessage = await response.text(); // Captura el mensaje del servidor si existe
-      throw new Error('Error al registrar la categoría: ' + errorMessage);
+      throw new Error('Error al registrar el paciente: ' + errorMessage);
     }
 
     // Mostrar mensaje de éxito
-    mostrarToast('Categoría registrada exitosamente.', '#092e95'); // Azul en lugar de verde
+    mostrarToast('Paciente registrado exitosamente.', '#092e95'); // Azul en lugar de verde
 
     // Limpiar el formulario después de registrar
-    document.getElementById('formRegistrarCategoria').reset();
+    document.getElementById('formRegistrarPaciente').reset();
 
     // Cerrar el modal
-    $('#registrarServicio').modal('hide');
+    $('#registrarPaciente').modal('hide');
 
-    // Opcional: Si deseas actualizar la lista de categorías después de registrar
-    obtenerCategorias();
+    // Opcional: Si deseas actualizar la lista de pacientes después de registrar
+    obtenerPacientes();
 
   } catch (error) {
     console.error('Hubo un problema con la solicitud:', error);
-    mostrarToast('Ocurrió un error al registrar la categoría.', '#092e95'); // Azul en lugar de rojo
+    mostrarToast('Ocurrió un error al registrar el paciente.', '#092e95'); // Azul en lugar de rojo
   }
 }
 
 // Agregar el evento para el formulario de registro
-document.getElementById('formRegistrarCategoria').addEventListener('submit', (event) => {
+document.getElementById('formRegistrarPaciente').addEventListener('submit', (event) => {
   event.preventDefault();  // Prevenir el envío normal del formulario
-  registrarCategoria();    // Llamar a la función para registrar la categoría
+  registrarPaciente();     // Llamar a la función para registrar el paciente
 });
-
-// Función para mostrar el mensaje tipo toast
-function mostrarToast(mensaje, color = '#092e95') {
-  const alertaDiv = document.createElement("div");
-  alertaDiv.classList.add("alerta");
-
-  const textoDiv = document.createElement("div");
-  textoDiv.classList.add("texto");
-  textoDiv.textContent = mensaje;
-
-  // Establecer color de fondo en azul
-  alertaDiv.style.backgroundColor = color;
-
-  const btnCerrar = document.createElement("button");
-  btnCerrar.classList.add("btn-cerrar");
-  btnCerrar.innerHTML = '&times;';
-  btnCerrar.addEventListener("click", () => {
-      alertaDiv.classList.remove("mostrar");
-      alertaDiv.classList.add("ocultar");
-      setTimeout(() => alertaDiv.remove(), 500);
-  });
-
-  const iconoDiv = document.createElement("div");
-  iconoDiv.classList.add("icono");
-  iconoDiv.innerHTML = '&#x1f3e5;'; 
-  iconoDiv.style.color = color;
-
-  alertaDiv.appendChild(iconoDiv);
-  alertaDiv.appendChild(textoDiv);
-  alertaDiv.appendChild(btnCerrar);
-
-  document.body.appendChild(alertaDiv);
-
-  setTimeout(() => alertaDiv.classList.add("mostrar"), 10);
-
-  setTimeout(() => {
-      alertaDiv.classList.remove("mostrar");
-      alertaDiv.classList.add("ocultar");
-      setTimeout(() => alertaDiv.remove(), 500);
-  }, 3000);
-}
