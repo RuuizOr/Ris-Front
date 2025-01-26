@@ -1,0 +1,127 @@
+/* Colores:
+    AZUL: #092e95
+    NEGRO: #000
+    VARIANTE DE AZUL: #2052dd
+*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+}
+
+body {
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.wrapper {
+    display: flex;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Formulario */
+.formulario {
+    display: grid;
+    width: 400px; /* Ancho reducido */
+    padding: 30px; /* Espaciado interno */
+    border: 3px solid #092e95;
+    box-shadow: 0 0 60px 0 #092e95;
+    background-color: rgba(0, 0, 0, 0.8); /* Transparencia */
+    border-radius: 15px; /* Bordes redondeados */
+}
+
+/* Formulario */
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 30px;
+    margin: 0; 
+}
+
+.title {
+    font-size: 35px;
+    text-align: center;
+}
+
+.inp {
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+.input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    margin-top: 20px;
+    padding-right: 10px;
+    font-size: 17px;
+    color: #2052dd;
+}
+
+.submit {
+    border: none;
+    outline: none;
+    width: 100%;
+    margin-top: 25px;
+    padding: 10px 0;
+    font-size: 20px;
+    border-radius: 40px;
+    cursor: pointer;
+    background: linear-gradient(45deg, #2052dd, #092e95);
+    color: #fff;
+}
+
+.footer {
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.link {
+    color: #092e95;
+    text-decoration: none;
+}
+
+.wel_text {
+    font-size: 40px;
+    margin-top: -20px;
+    line-height: 50px;
+}
+
+.para {
+    margin-top: 10px;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 1px;
+}
+
+/* Responsive de celular */
+@media (max-width: 768px) {
+    .formulario {
+        grid-template-columns: 1fr;
+        width: 90%;
+        height: auto;
+        padding: 15px; /* Ajuste de espaciado interno */
+    }
+    
+    .banner {
+        display: none;
+    }
+
+    .form {
+        padding: 20px;
+        margin-left: 0px; 
+    }
+}
