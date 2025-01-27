@@ -1,12 +1,4 @@
 async function obtenerPacientes() {
-    // const token = localStorage.getItem('jwt');
-    // console.log("Token JWT obtenido:", token);
-
-    // if (!token) {
-    //     console.log('No se encontró el token en el localStorage');
-    //     mostrarToast('No se encontró el token. Por favor, inicie sesión.', '#f44336');
-    //     return;
-    // }
 
     const url = 'http://localhost:8080/paciente/all'; // Cambiar a la URL real de tu API
 
@@ -136,3 +128,18 @@ function mostrarToast(mensaje, color = "#092e95") {
 
 // Llamar para obtener los datos
 obtenerPacientes();
+
+
+
+function logout() {
+    // Elimina los datos del localStorage relacionados con la sesión
+    localStorage.removeItem('userData');
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    localStorage.removeItem('role');
+    localStorage.removeItem('expiration');
+
+    // Redirige al usuario a la página de inicio de sesión
+    window.location.href = '../Login/Login.html';
+}

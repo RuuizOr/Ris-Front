@@ -1,6 +1,7 @@
 // Obtener el JWT de localStorage
 document.getElementById('btnIngresar').addEventListener('click', login);
 
+
 function login() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -10,36 +11,38 @@ function login() {
         return;
     }
 
-    // Hacer la petición POST al servidor
+    console.log(email);
+    console.log(password);
+
     fetch('http://localhost:8080/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            email: email,         // Cambiado 'username' por 'email'
-            contraseña: password  // Cambiado 'password' por 'contraseña'
+            email: email,
+            password: password
         })
     })
     .then(response => response.json())
     .then(data => {
+        console.log(data)
         if (data.type === 'SUCCESS') {
-            // Guardar toda la información de 'result' en localStorage
-            localStorage.setItem('userData', JSON.stringify(data.result)); // Guarda solo el objeto 'result'
+            localStorage.setItem('userData', JSON.stringify(data.result));
             
-            // También puedes guardar datos específicos si lo prefieres
+            console.log(JSON.stringify(data.result))
+
             localStorage.setItem('jwt', data.result.jwt);
             localStorage.setItem('userId', data.result.userId);
             localStorage.setItem('username', data.result.username);
-            localStorage.setItem('admin', data.result.admin);
+            localStorage.setItem('role', data.result.typeUser)
             localStorage.setItem('expiration', data.result.expiration);
 
             mostrarToast('Inicio de sesión exitoso', '#092e95');
 
-            // Verificar el rol del usuario y redirigir según corresponda
-            if (data.result.admin === 'ROLE_ADMIN') {
+            if (data.result.typeUser === 'MEDICO') {
                 window.location.href = '../../InicioAdmin/InicioAdmin.html';
-            } else if (data.result.admin === 'ROLE_USER') {
+            } else if (data.result.typeUser === 'PACIENTE') {
                 window.location.href = '../../InicioUsuarioNormal/InicioUsuarioNormal.html';
             }
         } else {

@@ -138,3 +138,18 @@ function mostrarToast(mensaje, color = "#092e95") {
 
 // Llamar para obtener los datos
 obtenerCitas();
+
+
+
+function logout() {
+    // Elimina los datos del localStorage relacionados con la sesión
+    localStorage.removeItem('userData');
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    localStorage.removeItem('role');
+    localStorage.removeItem('expiration');
+
+    // Redirige al usuario a la página de inicio de sesión
+    window.location.href = '../Login/Login.html';
+}

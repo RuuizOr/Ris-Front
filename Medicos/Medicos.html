@@ -17,6 +17,22 @@
 </head>
 
 <body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            checkLoggedIn();
+        });
+        function checkLoggedIn() {
+            const role = localStorage.getItem('role');
+
+            if (role) {
+                if (role === 'PACIENTE') {
+                    window.location.href = '../../Pacientes/Pacientes.html'; 
+                }
+            } else {
+                window.location.href = '../Login/Login.html'
+            }
+        }
+    </script>
     <!-- Video de fondo -->
     <video id="videoBackground" autoplay muted loop>
         <source src="img/fondoo2.mp4" type="video/mp4">
@@ -45,13 +61,6 @@
                     <div class="tooltip">Medicos</div>
                 </li>
                 <li class="sidebar-item">
-                    <a href="../Pacientes/Pacientes.html" class="sidebar-link">
-                        <i class="fa-solid fa-user"></i>
-                        <span>Pacientes</span>
-                    </a>
-                    <div class="tooltip">Pacientes</div>
-                </li>
-                <li class="sidebar-item">
                     <a href="../Agenda/Agenda.html" class="sidebar-link">
                         <i class="fa-solid fa-calendar-days"></i>
                         <span>Agenda</span>
@@ -60,10 +69,10 @@
                 </li>
             </ul> 
             <div class="sidebar-footer background-color" title="Salir">
-                <a href="../Login/Login.html" class="sidebar-link">
+                <a href="#" class="sidebar-link" onclick="logout()">
                     <i class="fas fa-right-from-bracket"></i>
                     <span>Salir</span>
-                </a>
+                </a> 
                 <div class="tooltip">Salir</div>
             </div>               
         </aside>
@@ -120,40 +129,51 @@
     </div>
 
         <!-- Modal para registrar al medico -->
-        <div class="modal fade" id="registrarMedico" tabindex="-1" role="dialog" aria-labelledby="registrarMedicoLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="registrarMedicoLabel">Registrar Médico</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="formRegistrarMedico" action="javascript:void(0);">
-                            <!-- Nombre -->
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="nombre" name="nombre" maxlength="50" placeholder=" " required>
-                                <label for="nombre" class="col-form-label">Nombre:</label>
-                            </div>
-                            <!-- Apellido -->
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="apellidos" name="apellidos" maxlength="50" placeholder=" " required>
-                                <label for="apellidos" class="col-form-label">Apellidos:</label>
-                            </div>
-                            <!-- Especialidad -->
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="especialidad" name="especialidad" maxlength="50" placeholder=" " required>
-                                <label for="especialidad" class="col-form-label">Especialidad:</label>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Registrar</button>
-                            </div>
-                        </form>
-                    </div>
+    <div class="modal fade" id="registrarMedico" tabindex="-1" role="dialog" aria-labelledby="registrarMedicoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registrarMedicoLabel">Registrar Médico</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formRegistrarMedico" action="javascript:void(0);">
+                        <!-- Nombre -->
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="nombre" name="nombre" maxlength="50" placeholder=" " required>
+                            <label for="nombre" class="col-form-label">Nombre:</label>
+                        </div>
+                        <!-- Apellido -->
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="apellidos" name="apellidos" maxlength="50" placeholder=" " required>
+                            <label for="apellidos" class="col-form-label">Apellidos:</label>
+                        </div>
+                        <!-- Especialidad -->
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="especialidad" name="especialidad" maxlength="50" placeholder=" " required>
+                            <label for="especialidad" class="col-form-label">Especialidad:</label>
+                        </div>
+                        <!-- Correo -->
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="correo" name="correo" maxlength="50" placeholder=" " required>
+                            <label for="correo" class="col-form-label">Correo:</label>
+                        </div>
+                        <!-- Contraseña -->
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="contraseña" name="contraseña" maxlength="50" placeholder=" " required>
+                            <label for="contraseña" class="col-form-label">Contraseña:</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
+
         
         <!-- Modificar datos del medico -->
         <div class="modal fade" id="modificarMedico" tabindex="-1" role="dialog" aria-labelledby="modificarMedicoLabel" aria-hidden="true">

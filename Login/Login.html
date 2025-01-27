@@ -11,6 +11,22 @@
 
 </head>
 <body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            checkLoggedIn();
+        });
+        function checkLoggedIn() {
+            const role = localStorage.getItem('role');
+
+            if (role) {
+                if (role === 'MEDICO') {
+                    window.location.href = '../../InicioAdmin/InicioAdmin.html';
+                } else if (role === 'PACIENTE') {
+                    window.location.href = '../../Pacientes/Pacientes.html'; 
+                }
+            }
+        }
+    </script>
     <video autoplay loop muted playsinline class="video-background">
         <source src="img/fondo.mp4" type="video/mp4">
     </video>
@@ -25,8 +41,7 @@
                     <input type="password" class="input" placeholder="Contraseña" id="password" required>
                 </div>
                 <button type="submit" class="submit" id="btnIngresar" >Ingresar</button>
-                <div class="footer">       
-                    <!--   -->
+                <div class="footer">
                 </div>
             </div>
         </div>

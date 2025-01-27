@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/8f2cb0ebcf.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="../InicioAdmin/img/Inicio.svg">    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/estilosModal.css">
+    <link rel="stylesheet" href="css/alertas.css">
+
+
+</head>
+<body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            checkLoggedIn();
+        });
+    </script>
+    <video autoplay loop muted playsinline class="video-background">
+        <source src="img/Doc.mp4" type="video/mp4">
+    </video>
+    <div class="salirInicio background-color">
+        <a href="#" class="sidebar-link" onclick="logout()">
+            <i class="fas fa-right-from-bracket"></i>
+        </a>        
+        <div class="tooltip">Salir</div>
+    </div> 
+    <div class="wrapper">
+        <div class="container text-center">                            
+            <h1 class="mb-4 text-light">Inicio</h1>
+            <div class="row">
+                <div class="col-sm-6 mb-3 col-md-4">
+                </div>
+                <div class="col-sm-6 mb-3 col-md-4">
+                    <div class="card">
+                        <div class="card-body servicios">
+                            <h5 class="card-title"> Pacientes</h5>
+                            <a href="../Pacientes/Pacientes.html" id="ad2" class="btn"><i class="fa-solid fa-user"></i>  Ver</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 mb-3 col-md-4">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/conusmo.js"></script>
+    <script src="js/editar.js"></script>
+</body>
+</html>
