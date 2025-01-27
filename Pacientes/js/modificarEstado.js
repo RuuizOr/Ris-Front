@@ -1,3 +1,4 @@
+const token6 = localStorage.getItem('jwt')
 $(document).ready(function () {
     const formModificarEstado = $('#formModificarEstadoPaciente');
     const modalModificarEstado = $('#modificarEstadoPaciente');

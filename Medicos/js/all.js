@@ -1,3 +1,5 @@
+
+const token = localStorage.getItem('jwt');
 // Función para mostrar alertas personalizadas
 function mostrarAlerta(mensaje, tipo = 'info') {
     const alerta = document.createElement('div');
@@ -30,6 +32,7 @@ async function obtenerUsuarios() {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }

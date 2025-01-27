@@ -1,12 +1,14 @@
+const token5 = localStorage.getItem('jwt');
+console.log(token5)
 async function obtenerPacientes() {
-
+ 
     const url = 'http://localhost:8080/paciente/all'; // Cambiar a la URL real de tu API
 
     try {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                // 'Authorization': `Bearer ${token}`,
+                 'Authorization': `Bearer ${token5}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },

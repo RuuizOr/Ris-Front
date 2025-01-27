@@ -1,3 +1,5 @@
+const token3 = localStorage.getItem('jwt');
+console.log("Token JWT obtenido:", token3);
 // Mostrar alerta personalizada
 function mostrarAlerta(mensaje, tipo = 'info') {
     const alerta = document.createElement('div');
@@ -27,10 +29,14 @@ $('#modificarMedico').on('show.bs.modal', function (event) {
 
     // Capturar los datos del botón
     const id = button.data('id') || '';
+    console.log(id)
     const nombre = button.data('nombre') || '';
+    console.log(nombre)
     const apellidos = button.data('apellidos') || '';
+    console.log(apellidos)
     // const email = button.data('correo') || '';
     const especialidad = button.data('especialidad') || '';
+    console.log(especialidad)
     // const contrasena = button.data('contrasena') || '';
     // const rol = button.data('rol') || '';
 
@@ -79,7 +85,7 @@ async function editarUsuario(event) {
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
-                // 'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${token3}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },

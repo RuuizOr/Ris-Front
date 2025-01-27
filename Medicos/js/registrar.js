@@ -1,6 +1,13 @@
-// Función para registrar un usuario
+const token2 = localStorage.getItem('jwt');
+console.log(token2);
+
+if (!token2) {
+    console.log("No se encontró el token en el localStorage");
+    alert("No se encontró el token");
+}
+
 async function registrarUsuario(event) {
-    event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+    event.preventDefault();
 
     // URL de la API
     const url = 'http://localhost:8080/medicos/save';
@@ -9,17 +16,12 @@ async function registrarUsuario(event) {
     const nombre = document.getElementById('nombre').value.trim();
     const apellidos = document.getElementById('apellidos').value.trim();
     const especialidad = document.getElementById('especialidad').value.trim();
-    const correo = document.getElementById('correo').value.trim();
-    const contraseña = document.getElementById('contraseña').value.trim();
 
     // Crear el objeto de usuario
     const usuario = {
         nombre: nombre,
-        apellido: apellidos,
-        especialidade: especialidad,
-        correo: correo,
-        contrasena: contraseña,
-        status: true
+        apellido: apellidos, // Asegúrate de que coincide con la clave esperada por la API
+        especialidade: especialidad, // Cambia a "especialidad" si la API lo requiere
     };
 
     try {
@@ -27,33 +29,28 @@ async function registrarUsuario(event) {
         const response = await fetch(url, {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',       // Aceptar respuesta en formato JSON
-                'Content-Type': 'application/json'  // Enviar datos en formato JSON
+                'Authorization': `Bearer ${token2}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(usuario)          // Convertir el objeto a JSON
+            body: JSON.stringify(usuario),
         });
 
         // Verificar si la respuesta es exitosa
         if (response.ok) {
             const data = await response.json(); // Si hay respuesta JSON, procesarla
             console.log('Usuario registrado exitosamente:', data);
-            mostrarAlerta('Usuario registrado exitosamente.', 'success');
-
-            // Opcional: cerrar el modal y limpiar el formulario
-            $('#registrarMedico').modal('hide');
+            alert('Usuario registrado exitosamente.');
             document.getElementById('formRegistrarMedico').reset();
-
-            // Opcional: actualizar la lista de usuarios
-            obtenerUsuarios();
         } else {
-            // Intentar parsear la respuesta del error
+            // Manejar errores de la API
             const errorData = await response.json();
             console.error('Error al registrar el usuario:', errorData);
-            mostrarAlerta('Error al registrar el usuario: ' + (errorData.message || 'Verifique los datos ingresados'), 'error');
+            alert('Error al registrar el usuario: ' + (errorData.message || 'Verifique los datos ingresados.'));
         }
     } catch (error) {
         console.error('Hubo un problema con la solicitud:', error);
-        mostrarAlerta('Ocurrió un error al intentar registrar el usuario.', 'error');
+        alert('Ocurrió un error al intentar registrar el usuario.');
     }
 }
 

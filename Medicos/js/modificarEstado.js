@@ -1,3 +1,5 @@
+const token4 = localStorage.getItem('jwt');
+console.log(token4)
 // Manejar el evento de apertura del modal
 $('#modificarEstadoMedico').on('show.bs.modal', function (event) {
     const button = $(event.relatedTarget); // Botón que abrió el modal
@@ -27,7 +29,7 @@ $('#formModificarEstado').on('submit', async function (e) {
         const response = await fetch('http://localhost:8080/medicos/change-status', {
             method: 'PUT',
             headers: {
-                // 'Authorization': `Bearer ${token}`,
+                 'Authorization': `Bearer ${token4}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },

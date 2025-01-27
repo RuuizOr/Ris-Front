@@ -1,3 +1,4 @@
+const token7 = localStorage.getItem('jwt');
 // Función para registrar un nuevo paciente
 async function registrarPaciente() {
   const nombre = document.getElementById('nombre').value;
@@ -33,7 +34,7 @@ async function registrarPaciente() {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`, // Incluir el token en el encabezado
+        'Authorization': `Bearer ${token7}`, // Incluir el token en el encabezado
         'Accept': 'application/json',         // Aceptar respuesta en formato JSON
         'Content-Type': 'application/json'    // Especificar que enviamos/recibimos JSON
       },
